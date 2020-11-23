@@ -36,3 +36,9 @@ RUN echo $version > "$UNITY_PATH/version"
 # Alias to "unity-editor" with default params
 RUN echo '#!/bin/bash\nxvfb-run -ae /dev/stdout "$UNITY_PATH/Editor/Unity" -batchmode "$@"' > /usr/bin/unity-editor \
  && chmod +x /usr/bin/unity-editor
+
+# Install Python2 when Target Platform is WebGL
+ARG module="non-existent-module"
+RUN if [ "$module" = "webgl" ] ; then \
+      apt-get -q update && apt-get -q install -y --no-install-recommends python && apt-get clean ; \
+    fi
